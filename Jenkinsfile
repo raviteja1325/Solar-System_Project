@@ -18,10 +18,10 @@ pipeline{
         stage("NPM Dependency AUdit"){
             steps{
                 
-                sh"""
+                sh'''
                     npm audit --audit-level=critical
                     echo $?
-                """
+                '''
             }
         }
    
