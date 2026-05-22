@@ -7,6 +7,11 @@ pipeline{
         nodejs "NodeJS 26.2.0"
     }
 
+    environment{
+        MONGO_URI = "mongodb+srv:supercluster.d83jj.mongodb.net/superData"
+
+    }
+
     stages{
         stage("Installing Dependencies"){
             steps{
@@ -38,7 +43,7 @@ pipeline{
                         dependencyCheckPublisher failedTotalCritical:1, pattern: 'dependency-check-report.xml', stopbuild: true
 
                         junit allowEmptyResults: true, testResults: 'dependency-check-junit.xml'
-                        
+
                         publishHTML([allowMissing: true, alwaysLinkToLastBuild: true, icon: '', keepAll: true, reportDir: './', reportFiles: 'dependency-check-jenkins.html', reportName: 'Dependency Check HTML Report', reportTitles: '', useWrapperFileDirectly: true])
                     }
                 }
@@ -46,6 +51,15 @@ pipeline{
             }
         }
 
+        
+        stage("Unit Tests"){
+            steps{
+                withCredentials([usernamePassword(credentialsId: 'mongo-db-credentials', passwordVariable: 'MONGO_PASSWORD', usernameVariable: 'MONGO_USERNAME')]) {
+                    sh "npm test"
+                }
+                junit allowEmptyResults: true, testResults: 'test-result.xml'
+            }
+        }
         
     }
 }
