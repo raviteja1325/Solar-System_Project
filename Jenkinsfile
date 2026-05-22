@@ -35,6 +35,7 @@ pipeline{
                             --out \'./\'
                             --format \'ALL\'
                             --prettyPrint''',odcInstallation: 'OWASP-DP-CHECK-12' 
+                        dependencyCheckPublisher failedTotalCritical:1, pattern: 'dependency-check-report.xml', stopbuild: true
                     }
                 }
 
