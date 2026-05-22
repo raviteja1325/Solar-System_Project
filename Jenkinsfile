@@ -3,6 +3,7 @@ pipeline{
     agent any
     
     tools{
+        
         nodejs "NodeJS 26.2.0"
     }
 
@@ -11,7 +12,6 @@ pipeline{
             steps{
                 
                 sh "node -v"
-                sh "npm -v"
             }
         }
     }    
